@@ -1,42 +1,24 @@
-
-#include "file_operation_lib.h"
+#include "new_sorting_lib.h"
 FILE *myfile;
 
 
-int main(int argc, char **argv)
+int main(int argc,char **argv)
 {
-    if (check_number_of_arguments(argc) != true)
-    {
-        message_incorrect_no_of_args();             // Check if number of invocation arguments is correct and message to user.
-        exit(1);                                    //If file doesn't exist exit programm with failure code
-    }
-    else                                            // if number of calling args is correct
-    {
-        message_correct_no_of_args();               // Message to user about correct number of args
-            if (check_if_file_exists(argv[1]) == true)
-                message_file_exist();                   // Check path to myfile point to existing myfile and messeage to user if myfile exist
-            else
-            {
-                message_file_not_exist();               // Message to user if myfile doesn't exist
-                exit(1);                                //If file doesn't exist exit programm with failure code
-            }
-    }
-
-    myfile = fopen(argv[1], "r");
-     fseek(myfile,0,0); 
-    if(check_if_there_are_any_letters()==true)
-    {
-        message_about_letters_in_file();
-        exit(1);
-    }
-    fseek(myfile,0,0); 
-     // new_size_of_array = count_numbers_in_the_file();
-    printf("%d\n",new_size_of_array);
-    int Array_of_numbers[new_size_of_array];
-    write_number_into_array(Array_of_numbers);
-    fclose(myfile);
-  
+char path_to_file[NUMBEROFCHARS];
+char sorting_category[NUMBEROFCHARS];
+short operation_code = 0;
+short *ptr_to_operation_code = &operation_code;
+int amount_of_humans = 0;
+copy_arguments_to_chars(argv,path_to_file,sorting_category);
+get_operation_code(sorting_category,ptr_to_operation_code);
+myfile = fopen(path_to_file,"r");\
+fseek(myfile,0,0);
+amount_of_humans=count_humans();
+Humans_struct *humans = read_list_of_humans(amount_of_humans);
+fclose(myfile);
+bubble_sort(humans,operation_code,amount_of_humans);
+printf("\nQuantinity of humans = %d\n\n",amount_of_humans);
+display_structs(humans,amount_of_humans);
+free(humans);
+return 0;
 }
-
-
-
