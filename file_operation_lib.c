@@ -1,110 +1,175 @@
-
-
-#include "file_operation_lib.h"
+#include "new_sorting_lib.h"
 extern FILE *myfile;
 
-
-int count_numbers_in_the_file()
+void get_new_line(char temp_line[NUMBEROFCHARS])
 {
- int znak = 0;
- int amount_of_numbers = 0;
- 
- while(znak!=EOF)
- {   
-    znak = getc(myfile); 
-    if(isdigit(znak)>0)
-    {   znak = getc(myfile); 
-        if(ispunct(znak)>0) ++amount_of_numbers;
-        else 
-        {   if(znak==EOF)++amount_of_numbers;
-            fseek(myfile,1,1);
+  char temp_char = '0';
+  int index_in_line = 0;
+    while((temp_char = fgetc(myfile)) != '\n' && temp_char != EOF)
+    {
+       temp_line[index_in_line]=temp_char;
+      ++index_in_line;
+    }
+}
+
+
+Humans_struct *read_list_of_humans(int amount_of_humans)
+{
+    Humans_struct *humans = (Humans_struct *)malloc(amount_of_humans * (sizeof(Humans_struct)));
+    char temp_line[NUMBEROFCHARS];
+    for (int i = 0; i < amount_of_humans; i++)
+    {
+        get_new_line(temp_line);
+        if (strncmp(temp_line, "Person", 6) == 0)
+        {
+            fseek(myfile, 1, 1);
+            fseek(myfile, 9, 1);
+            fscanf(myfile, "%s", humans[i].name);
+            get_new_line(temp_line);
+
+            fseek(myfile, 1, 1);
+            fseek(myfile, 9, 1);
+            fscanf(myfile, "%d", &humans[i].age);
+            get_new_line(temp_line);
+
+            fseek(myfile, 1, 1);
+            fseek(myfile, 9, 1);
+            fscanf(myfile, "%f", &humans[i].height);
+            get_new_line(temp_line);
+            fseek(myfile, 1, 1);
         }
     }
-  } 
-  return amount_of_numbers;
+    fseek(myfile, 0, 0);
+    return humans;
 }
 
 
-bool check_if_there_are_any_letters()
+
+
+
+int count_humans()
 {
- int ilosc_bledow =0;
- int znak = 0;
-    while((znak!=EOF))
+    int amount_of_structs = 0;
+    char temp_char = '0';
+    char temp_line[NUMBEROFCHARS];
+   // FILE *myfile = fopen(path_to_file,"r");
+    fseek(myfile,0,0);
+    while((temp_char = fgetc(myfile))!=EOF)
     {
-    znak = getc(myfile);
-    if(isalpha(znak)>0)
+      fseek(myfile,(-1),1);
+      get_new_line(temp_line);
+      if(strncmp(temp_line,"Person",6)==0) ++amount_of_structs;
+      fseek(myfile,1,1);
+    }
+   // fclose(myfile);
+   fseek(myfile,0,0);
+   return amount_of_structs;
+}
+
+void copy_arguments_to_chars(char **argv,char path_to_file[NUMBEROFCHARS],char sorting_category[NUMBEROFCHARS])
+{
+  strncpy(sorting_category,argv[2],NUMBEROFCHARS);
+  strncpy(path_to_file,argv[1],NUMBEROFCHARS);
+}
+
+
+void display_structs(Humans_struct *humans,unsigned int amount_of_structs)
+{
+  for(short i = 0; i<(short)amount_of_structs; i++)
+  {
+    printf("Person %d ", i+1);
+    printf("Name =%s, ",humans[i].name);
+    printf("age =%d, ",humans[i].age);
+    printf("height =%f\n",humans[i].height);
+
+  }
+}
+
+
+
+void bubble_sort_by_age(Humans_struct *humans,unsigned int amount_of_structs)
+{
+  do
+  {
+    for (unsigned short i = 0; i <(unsigned short)amount_of_structs-1; i++)
     {
-        ++ilosc_bledow;
+      if (humans[i].age> humans[i+1].age)
+      {
+        humans[amount_of_structs]=humans[i+1];
+        humans[i+1]= humans[i];
+        humans[i]= humans[amount_of_structs];
+      }
     }
-    }
-       if(ilosc_bledow!=0)return true;
-    else return false;
+  -- amount_of_structs;
+  } while (amount_of_structs>1);
+  
 }
 
-void message_about_letters_in_file()
+
+void bubble_sort_by_name(Humans_struct *humans,unsigned int amount_of_structs)
 {
-    printf("INCORRECT FILE FORMAT\n");
-    printf("The file cannot contain letters\n");
+  do
+  {
+    for (unsigned short i = 0; i <(unsigned short)amount_of_structs-1; i++)
+    {
+      if (strncmp(humans[i].name,humans[i+1].name,128)>0)
+      {
+        humans[amount_of_structs]=humans[i+1];
+        humans[i+1]= humans[i];
+        humans[i]= humans[amount_of_structs];
+      }
+     
+
+    }
+  -- amount_of_structs;
+  } while (amount_of_structs>1);
 }
 
-int write_number_into_array( int Array_of_numbers[new_size_of_array])
+
+void bubble_sort_by_height(Humans_struct *humans,unsigned int amount_of_structs)
 {
- int temp_number = 0;
- int index_in_array = 0;
- fseek(myfile,0,0);
- while(index_in_array<new_size_of_array)
+  do
+  {
+    for (short i = 0; i <(short)amount_of_structs-1; i++)
+    {
+      if (humans[i].height > humans[i+1].height)
+      {
+        humans[amount_of_structs]=humans[i+1];
+        humans[i+1]= humans[i];
+        humans[i]= humans[amount_of_structs];
+      }
+    }
+  -- amount_of_structs;
+  } while (amount_of_structs>1);
+}
+
+
+
+
+
+void bubble_sort(Humans_struct *humans,short operation_code,unsigned int amount_of_structs)
+{
+ switch (operation_code)
  {
-    fscanf(myfile,"%d",&temp_number);
-    fseek(myfile,1,1);
-    Array_of_numbers[index_in_array]=temp_number;
-    ++index_in_array; 
+ case 1:
+  bubble_sort_by_age(humans,amount_of_structs);
+  break;
+ case 2:
+ bubble_sort_by_height(humans,amount_of_structs);
+ break;
+ case 3:
+ bubble_sort_by_name(humans,amount_of_structs);
+ break;
+ default:
+ printf("Wrong operation code!\n");
+  
  }
-
 }
 
 
-
-
-void message_correct_no_of_args()
+void get_operation_code(char sorting_category[NUMBEROFCHARS],short *ptr_to_operation_code)
 {
-    printf("Number of arguments is correct :D\n");
-}
-void message_incorrect_no_of_args()
-{
-    printf("Incorrect number of arguments \n");
-    printf("Expected number of arguments(ext) is 2\n");
-}
-void message_file_exist()
-{
-    printf("File exists :D\n");
-}
-
-void message_file_not_exist()
-{
-    printf("File doesn't exist\n");
-}
-
-int check_number_of_arguments(int argc)
-{
-    if (argc != NUMBER_OF_EXPECTED_EXT_ARGS)
-    {
-        return false;
-    }
-    else
-    {
-        return true;
-    }
-}
-
-int check_if_file_exists(char path_to_file[255])
-{                                                    // remeber arg no.1 must be path to existing myfile or name of myfile in project enviroment
-    if ((myfile = fopen(path_to_file, "r")) == NULL) // check if myfile exist if no display a message to user
-    {
-        return false;
-    }
-    else
-    {
-        fclose(myfile);
-        return true;
-    }
+  if( strcmp( sorting_category, "age" )   == 0 ) *ptr_to_operation_code = 1;
+  if( strcmp( sorting_category, "height") == 0 ) *ptr_to_operation_code = 2;
+  if( strcmp( sorting_category, "name")   == 0 ) *ptr_to_operation_code = 3;
 }
