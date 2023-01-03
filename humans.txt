@@ -1,24 +1,24 @@
 Person 1:
-    Name: Azazel
+    Name: Andrzej
      Age: 21
   Height: 179.80
 
 Person 2: 
-    Name: Bezazel
+    Name: Bartek
      Age: 50
   Height: 176.5
 
 Person 3:
-    Name: Cezazel
+    Name: Cezary
      Age: 25
   Height: 178
 
 Person 4:
-    Name: Dezazel
+    Name: Darek
      Age: 26
   Height: 205
 
 Person 5:
-    Name: Ezazel
+    Name: Edek
      Age: 26
   Height: 211
