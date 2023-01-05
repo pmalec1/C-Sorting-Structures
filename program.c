@@ -3,6 +3,7 @@ FILE *myfile;
 
 int main(int argc,char **argv)
 {
+
 //Variables init
 char path_to_file[NUMBEROFCHARS];
 char sorting_category[NUMBEROFCHARS];
@@ -10,14 +11,18 @@ short operation_code = 0;
 short *ptr_to_operation_code = &operation_code;
 int amount_of_humans = 0;
 bool parameter_of_direction;
-copy_arguments_to_chars(argv,path_to_file,sorting_category);
 
 //Checking correctivity of calling arguments 
-if(check_number_of_arguments(argc)!=true)
-   { printf("Incorrect number of arguments \n");
-      printf("Expected number of arguments(ext) is 2\n");
-      exit(0); }                        
+if(check_number_of_arguments(argc)==false)
+   { 
+      printf("Incorrect number of arguments \n");
+      printf("Expected number of arguments(ext) is 3\n");
+      exit(0);
+   }                        
 else printf("Number of arguments is correct :D\n");
+
+copy_arguments_to_chars(argv,path_to_file,sorting_category);
+
    
 
 if(check_if_file_exists(path_to_file)==true) printf("File exists :D\n");
