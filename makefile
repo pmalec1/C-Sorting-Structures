@@ -11,5 +11,3 @@ height:
 			./${EXEC_NAME} ${TEXT_FILE_NAME} height
 name:
 			./${EXEC_NAME} ${TEXT_FILE_NAME} name
-wrong:
-			./${EXEC_NAME} ${TEXT_FILE_NAME} wrong
