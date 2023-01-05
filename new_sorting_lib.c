@@ -3,14 +3,8 @@ extern FILE *myfile;
 
 bool check_number_of_arguments(int argc)
 {
- if(argc!=EXPECTED_ARGS_NUMBER)                                                                                                                
-    {
-      return false;                                                                                    
-    }                                                                                                             
- else                                                               
- {
-   return true;
- }
+ if(argc==EXPECTED_ARGS_NUMBER)return true;
+ if(argc!=EXPECTED_ARGS_NUMBER)return false;
 }
        
 bool check_if_file_exists(char path_to_file[255]) 
@@ -164,13 +158,13 @@ void sort_struct_by_int(Humans_struct *humans, Humans_struct temp,int amount_of_
   do
   {
     amount_of_humans--;
-    for(unsigned int i = 0; i<amount_of_humans; i++)
+    for(unsigned int i = 0; i<(unsigned int)amount_of_humans; i++)
     {
-        if (humans[i].age>humans[i+1].age & parameter_of_direction==true)
+        if (humans[i].age>humans[i+1].age && parameter_of_direction==true)
         {
           swap(humans,temp,i);
         }
-        if (humans[i].age<humans[i+1].age & parameter_of_direction==false)
+        if (humans[i].age<humans[i+1].age && parameter_of_direction==false)
         {
           swap(humans,temp,i);
         }
@@ -185,7 +179,7 @@ void sort_struct_by_float(Humans_struct *humans, Humans_struct temp,int amount_o
    do
   {
     amount_of_humans--;
-    for(unsigned int i = 0; i<amount_of_humans; i++)
+    for(unsigned int i = 0; i<(unsigned int)amount_of_humans; i++)
     {
         if (humans[i].height>humans[i+1].height && parameter_of_direction==true)
         {
@@ -204,7 +198,7 @@ void sort_struct_by_string(Humans_struct *humans, Humans_struct temp,int amount_
   do
   {
     amount_of_humans--;
-    for(unsigned int i = 0; i<amount_of_humans; i++)
+    for(unsigned int i = 0; i<(unsigned int)amount_of_humans; i++)
     {
         if ((strcoll(humans[i].name,humans[i+1].name) > 0) && parameter_of_direction==true)
         {
