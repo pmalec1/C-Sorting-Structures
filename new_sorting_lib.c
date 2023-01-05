@@ -1,6 +1,46 @@
 #include "new_sorting_lib.h"
 extern FILE *myfile;
 
+bool check_number_of_arguments(int argc)
+{
+ if(argc!=EXPECTED_ARGS_NUMBER)                                                                                                                
+    {
+      return false;                                                                                    
+    }                                                                                                             
+ else                                                               
+ {
+   return true;
+ }
+}
+       
+bool check_if_file_exists(char path_to_file[255]) 
+{                                                          // remeber arg no.1 must be path to existing file or name of file in project enviroment
+      if((myfile = fopen(path_to_file,"r")) == NULL)                   //check if file exist if no display a message to user
+        {
+          return false;
+        } 
+        else
+        {
+        fclose(myfile);
+        return true;  
+        }
+}
+
+
+void get_sorting_category(char sorting_category[NUMBEROFCHARS],short *ptr_to_operation_code)
+{
+  printf("\nsorting category is %s\n",sorting_category);\
+  *ptr_to_operation_code = 0;
+  if( strcmp( sorting_category, "age" )   == 0 ) *ptr_to_operation_code = 1;
+  if( strcmp( sorting_category, "height") == 0 ) *ptr_to_operation_code = 2;
+  if( strcmp( sorting_category, "name")   == 0 ) *ptr_to_operation_code = 3;
+  if(*ptr_to_operation_code == 0)
+  {
+   printf("WRONG OPERATION CODE\n");
+   exit(0);
+  }
+}
+
 void get_new_line(char temp_line[NUMBEROFCHARS])
 {
   char temp_char = '0';
@@ -10,6 +50,22 @@ void get_new_line(char temp_line[NUMBEROFCHARS])
        temp_line[index_in_line]=temp_char;
       ++index_in_line;
     }
+}
+
+bool get_information_about_direction_of_sorting()
+{
+  char tempchar = '0';
+   printf("\n A for ascending  or  D for descending\n");
+  tempchar = getchar();
+  if (tempchar=='A')
+  {
+    return true;
+  }
+  else if(tempchar=='D')
+  {
+    return false;
+  }
+  else  exit(0);
 }
 
 
@@ -42,10 +98,6 @@ Humans_struct *read_list_of_humans(int amount_of_humans)
     fseek(myfile, 0, 0);
     return humans;
 }
-
-
-
-
 
 int count_humans()
 {
@@ -85,91 +137,106 @@ void display_structs(Humans_struct *humans,unsigned int amount_of_structs)
   }
 }
 
+void write_list_of_humans(Humans_struct *humans,int amount_of_humans)
+{
+    fseek(myfile, 0, 0);
+    for (int i = 0; i < amount_of_humans; i++)
+    {
+     fprintf(myfile,"Person %d:\n",i+1);
+     fprintf(myfile,"    Name: %s\n",humans[i].name);
+     fprintf(myfile,"     Age: %d\n",humans[i].age);
+     fprintf(myfile,"  Height: %f\n",humans[i].height);
+     fprintf(myfile,"\n");
+    
+    }
+    fseek(myfile, 0, 0);
+}
 
+void swap(Humans_struct *humans, Humans_struct temp,unsigned int i)
+{
+  temp= humans[i+1];
+  humans[i+1]=humans[i];
+  humans[i]=temp;
+}
 
-void bubble_sort_by_age(Humans_struct *humans,unsigned int amount_of_structs)
+void sort_struct_by_int(Humans_struct *humans, Humans_struct temp,int amount_of_humans,bool parameter_of_direction)
 {
   do
   {
-    for (unsigned short i = 0; i <(unsigned short)amount_of_structs-1; i++)
+    amount_of_humans--;
+    for(unsigned int i = 0; i<amount_of_humans; i++)
     {
-      if (humans[i].age> humans[i+1].age)
-      {
-        humans[amount_of_structs]=humans[i+1];
-        humans[i+1]= humans[i];
-        humans[i]= humans[amount_of_structs];
-      }
+        if (humans[i].age>humans[i+1].age & parameter_of_direction==true)
+        {
+          swap(humans,temp,i);
+        }
+        if (humans[i].age<humans[i+1].age & parameter_of_direction==false)
+        {
+          swap(humans,temp,i);
+        }
     }
-  -- amount_of_structs;
-  } while (amount_of_structs>1);
   
+  } while (amount_of_humans>0);
+
 }
 
+void sort_struct_by_float(Humans_struct *humans, Humans_struct temp,int amount_of_humans,bool parameter_of_direction)
+{
+   do
+  {
+    amount_of_humans--;
+    for(unsigned int i = 0; i<amount_of_humans; i++)
+    {
+        if (humans[i].height>humans[i+1].height && parameter_of_direction==true)
+        {
+          swap(humans,temp,i);
+        }
+           if (humans[i].height<humans[i+1].height && parameter_of_direction==false)
+        {
+          swap(humans,temp,i);
+        }
+    }
+  } while (amount_of_humans>0);
+}
 
-void bubble_sort_by_name(Humans_struct *humans,unsigned int amount_of_structs)
+void sort_struct_by_string(Humans_struct *humans, Humans_struct temp,int amount_of_humans,bool parameter_of_direction)
 {
   do
   {
-    for (unsigned short i = 0; i <(unsigned short)amount_of_structs-1; i++)
+    amount_of_humans--;
+    for(unsigned int i = 0; i<amount_of_humans; i++)
     {
-      if (strncmp(humans[i].name,humans[i+1].name,128)>0)
-      {
-        humans[amount_of_structs]=humans[i+1];
-        humans[i+1]= humans[i];
-        humans[i]= humans[amount_of_structs];
-      }
-     
-
+        if ((strcoll(humans[i].name,humans[i+1].name) > 0) && parameter_of_direction==true)
+        {
+          swap(humans,temp,i);
+        }
+           if ((strcoll(humans[i].name,humans[i+1].name) <0) && parameter_of_direction==false)
+        {
+          swap(humans,temp,i);
+        }
     }
-  -- amount_of_structs;
-  } while (amount_of_structs>1);
+  } while (amount_of_humans>0);
 }
 
 
-void bubble_sort_by_height(Humans_struct *humans,unsigned int amount_of_structs)
+void bubble_sort(Humans_struct *humans,int amount_of_humans,bool parameter_of_direction,short operation_code)
 {
-  do
+  printf("OPERATION CODE = %hd",operation_code);
+  Humans_struct temp;
+  switch (operation_code)
   {
-    for (short i = 0; i <(short)amount_of_structs-1; i++)
-    {
-      if (humans[i].height > humans[i+1].height)
-      {
-        humans[amount_of_structs]=humans[i+1];
-        humans[i+1]= humans[i];
-        humans[i]= humans[amount_of_structs];
-      }
-    }
-  -- amount_of_structs;
-  } while (amount_of_structs>1);
-}
-
-
-
-
-
-void bubble_sort(Humans_struct *humans,short operation_code,unsigned int amount_of_structs)
-{
- switch (operation_code)
- {
- case 1:
-  bubble_sort_by_age(humans,amount_of_structs);
-  break;
- case 2:
- bubble_sort_by_height(humans,amount_of_structs);
- break;
- case 3:
- bubble_sort_by_name(humans,amount_of_structs);
- break;
- default:
- printf("Wrong operation code!\n");
-  
- }
-}
-
-
-void get_operation_code(char sorting_category[NUMBEROFCHARS],short *ptr_to_operation_code)
-{
-  if( strcmp( sorting_category, "age" )   == 0 ) *ptr_to_operation_code = 1;
-  if( strcmp( sorting_category, "height") == 0 ) *ptr_to_operation_code = 2;
-  if( strcmp( sorting_category, "name")   == 0 ) *ptr_to_operation_code = 3;
+  case 1:
+    sort_struct_by_int(humans,temp,amount_of_humans,parameter_of_direction);
+    break;
+  case 2:
+      sort_struct_by_float(humans,temp,amount_of_humans,parameter_of_direction);
+      break;
+  case 3:
+    sort_struct_by_string(humans,temp,amount_of_humans,parameter_of_direction);
+    break;
+  default:
+    printf("WRONG OPERATION CODE\n");
+    exit(0);
+    break;
+  }  
 }
