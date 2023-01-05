@@ -3,8 +3,8 @@ extern FILE *myfile;
 
 bool check_number_of_arguments(int argc)
 {
- if(argc==EXPECTED_ARGS_NUMBER)return true;
- if(argc!=EXPECTED_ARGS_NUMBER)return false;
+ if(argc==EXPECTED_ARGS_NUMBER) return true;
+ else  return false;
 }
        
 bool check_if_file_exists(char path_to_file[255]) 
