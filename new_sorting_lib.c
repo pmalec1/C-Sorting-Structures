@@ -132,7 +132,7 @@ void display_structs(Humans_struct *humans,unsigned int amount_of_structs)
     printf("Person %d ", i+1);
     printf("Name =%s, ",humans[i].name);
     printf("age =%d, ",humans[i].age);
-    printf("height =%f\n",humans[i].height);
+    printf("height =%.2f\n",humans[i].height);
 
   }
 }
@@ -145,7 +145,7 @@ void write_list_of_humans(Humans_struct *humans,int amount_of_humans)
      fprintf(myfile,"Person %d:\n",i+1);
      fprintf(myfile,"    Name: %s\n",humans[i].name);
      fprintf(myfile,"     Age: %d\n",humans[i].age);
-     fprintf(myfile,"  Height: %f\n",humans[i].height);
+     fprintf(myfile,"  Height: %.2f\n",humans[i].height);
      fprintf(myfile,"\n");
     
     }
