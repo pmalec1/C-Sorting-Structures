@@ -1,4 +1,4 @@
-PROGRAM_NAME = mal1.c
+PROGRAM_NAME = program.c
 LIB_NAME = new_sorting_lib.c
 EXEC_NAME = exe
 TEXT_FILE_NAME = humans.txt
