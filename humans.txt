@@ -1,24 +1,24 @@
 Person 1:
-    Name: Andrzej
-     Age: 10
-  Height: 279.80
+Name: Andrzej
+Age: 10
+Height: 279.1
 
 Person 2: 
-    Name: Bartek
-     Age: 54
-  Height: 376.5
+Name: Bartek
+Age: 54
+Height: 376.9
 
 Person 3:
-    Name: Cezary
-     Age: 11
-  Height: 178.03
+Name: Cezary
+Age: 11
+Height: 178.03
 
 Person 4:
-    Name: Darek
-     Age: 44
-  Height: 205.45
+Name: Darek
+Age: 44
+Height: 205.45
 
 Person 5:
-    Name: Edek
-     Age: 56
-  Height: 211.54
+Name: Edek
+Age: 56
+Height: 211.54
