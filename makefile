@@ -1,5 +1,5 @@
 PROGRAM_NAME = program.c
-LIB_NAME = new_sorting_lib.c
+LIB_NAME = sorting_lib.c
 EXEC_NAME = exe
 TEXT_FILE_NAME = humans.txt
 
