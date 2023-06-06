@@ -1,5 +1,9 @@
 # Piotr Malec
-# LAB 3 taks 1
+
+### downloading the book collection, sorting and saving the structure to a file   
+### an exercise in dynamic memory allocation
+
+
 # variables
 1. char path_to_file[NUMBEROFCHARS];
 2. char sorting_category[NUMBEROFCHARS];
