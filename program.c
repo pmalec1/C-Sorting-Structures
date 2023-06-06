@@ -1,8 +1,9 @@
 #include "sorting_lib.h"
-FILE *myfile;
+
 
 int main(int argc,char **argv)
 {
+  FILE *myfile;
 //Variables init
 char path_to_file[NUMBEROFCHARS];
 char sorting_category[NUMBEROFCHARS];
